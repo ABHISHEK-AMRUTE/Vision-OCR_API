@@ -20,23 +20,20 @@ const upload = multer({
  
 })
 
-
-
-
-
 app.use(express.json())
- 
 const config = {
   lang: "eng",
   oem: 1,
   psm: 3,
-}
-
-
-///  GET {{url}}/user
+        }
+//  GET {{url}}/ocr?lang=eng
 
 app.post('/ocr',upload.single('image'),(req,res)=>
 { 
+   if(req.query.lang){
+     config.lang=req.query.lang
+   }
+
   fs.writeFile("./image.png", req.file.buffer, function(err) {
     if(err) {
         return console.log(err);
@@ -52,10 +49,6 @@ app.post('/ocr',upload.single('image'),(req,res)=>
     console.log(error.message)
   })
   }); 
-
-
-
-  
   
 })
 
