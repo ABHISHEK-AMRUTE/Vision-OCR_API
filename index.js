@@ -55,6 +55,7 @@ app.post('/ocr',upload.single('image'),(req,res)=>
   })
   .catch(error => {
     console.log(error.message)
+    res.send({error:error.message})
   })
   }); 
   
