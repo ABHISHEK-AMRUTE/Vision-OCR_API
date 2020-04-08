@@ -7,7 +7,7 @@ const multer = require('multer')
 const upload = multer({
    
   limits :{
-      fileSize : 4000000
+      fileSize : 10000000
 
   },
   fileFilter(req,file,cb){
@@ -46,13 +46,14 @@ app.post('/ocr',upload.single('image'),(req,res)=>
   .then(text => {
     console.log("Result:", text)
     res.send(text)
+    var filePath = './image.png'; 
+    fs.unlinkSync(filePath);
   })
   .catch(error => {
     console.log(error.message)
   })
   }); 
-  var filePath = './image.png'; 
-  fs.unlinkSync(filePath);
+  
 })
 
 
