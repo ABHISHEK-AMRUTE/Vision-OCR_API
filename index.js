@@ -3,13 +3,25 @@ const express = require('express')
 const app = express()
 const port = process.env.PORT || 3000
 const fs = require('fs');
+const multer = require('multer')
+const upload = multer({
+   
+  limits :{
+      fileSize : 4000000
 
-fs.writeFile("./test.text", "Hey there!", function(err) {
-    if(err) {
-        return console.log(err);
-    }
-    console.log("The file was saved!");
-}); 
+  },
+  fileFilter(req,file,cb){
+      if(!file.originalname.match(/\.(jpg|jpeg|png)$/))
+      {
+          return cb(new Error('File must be .jpg,.jpeg or .png'))
+      }
+      cb(undefined,true)
+  }
+ 
+})
+
+
+
 
 
 app.use(express.json())
@@ -23,9 +35,15 @@ const config = {
 
 ///  GET {{url}}/user
 
-app.get('/ocr',(req,res)=>
-{
-  tesseract.recognize("image.jpg", config)
+app.post('/ocr',upload.single('image'),(req,res)=>
+{ 
+  fs.writeFile("./image.png", req.file.buffer, function(err) {
+    if(err) {
+        return console.log(err);
+        
+    }
+    console.log("The file was saved!");
+    tesseract.recognize("image.png", config)
   .then(text => {
     console.log("Result:", text)
     res.send(text)
@@ -33,8 +51,15 @@ app.get('/ocr',(req,res)=>
   .catch(error => {
     console.log(error.message)
   })
+  }); 
+
+
+
+  
   
 })
+
+
 app.listen(port,()=>{
     console.log('Server is up on port :'+port)
 })
