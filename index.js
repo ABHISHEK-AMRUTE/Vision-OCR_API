@@ -4,6 +4,11 @@ const app = express()
 const port = process.env.PORT || 3000
 const fs = require('fs');
 const multer = require('multer')
+
+
+app.use(express.json())
+
+//////Setting up multer middleware
 const upload = multer({
    
   limits :{
@@ -20,16 +25,16 @@ const upload = multer({
  
 })
 
-app.use(express.json())
+///Configuration object for tesseract.js
 const config = {
   lang: "eng",
   oem: 1,
   psm: 3,
-    }
+  }
 
     
-   
-//  GET {{url}}/ocr?lang=eng
+ // formate of POST request
+//  POST {{url}}/ocr?lang=eng
 app.post('/ocr',upload.single('image'),(req,res)=>
 { 
    if(req.query.lang){
@@ -39,7 +44,6 @@ app.post('/ocr',upload.single('image'),(req,res)=>
   fs.writeFile("./image.png", req.file.buffer, function(err) {
     if(err) {
         return console.log(err);
-        
     }
     console.log("The file was saved!");
     tesseract.recognize("image.png", config)
