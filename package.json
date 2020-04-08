@@ -14,4 +14,5 @@
     "multer": "^1.4.2",
     "node-tesseract-ocr": "^1.0.0"
   }
+  
 }
