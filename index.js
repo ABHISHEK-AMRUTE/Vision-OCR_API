@@ -25,9 +25,11 @@ const config = {
   lang: "eng",
   oem: 1,
   psm: 3,
-        }
-//  GET {{url}}/ocr?lang=eng
+    }
 
+    
+   
+//  GET {{url}}/ocr?lang=eng
 app.post('/ocr',upload.single('image'),(req,res)=>
 { 
    if(req.query.lang){
@@ -49,7 +51,8 @@ app.post('/ocr',upload.single('image'),(req,res)=>
     console.log(error.message)
   })
   }); 
-  
+  var filePath = './image.png'; 
+  fs.unlinkSync(filePath);
 })
 
 
